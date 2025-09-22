@@ -1,5 +1,6 @@
 <?php
 // Include company configuration
+require_once 'config.php';
 require_once 'company_config.php';
 
 // Start session for CSRF token and language
@@ -36,7 +37,7 @@ if (!isset($_SESSION['csrf_token'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $language; ?>">
+<html lang="<?php echo $language; ?>" dir="<?php echo ($language === 'ar' || $language === 'ur') ? 'rtl' : 'ltr'; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,35 +45,29 @@ if (!isset($_SESSION['csrf_token'])) {
     <meta name="description" content="<?php echo $page_description; ?>">
     <meta name="keywords" content="<?php echo $page_keywords; ?>">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="<?php echo SITE_URL; ?>">
+    <link rel="canonical" href="<?php echo $site_url; ?>">
 
     <!-- hreflang tags for multilingual support -->
-    <link rel="alternate" hreflang="en" href="<?php echo SITE_URL; ?>?lang=en">
-    <link rel="alternate" hreflang="ur" href="<?php echo SITE_URL; ?>?lang=ur">
-    <link rel="alternate" hreflang="ar" href="<?php echo SITE_URL; ?>?lang=ar">
-    <link rel="alternate" hreflang="es" href="<?php echo SITE_URL; ?>?lang=es">
-    <link rel="alternate" hreflang="fr" href="<?php echo SITE_URL; ?>?lang=fr">
-    <link rel="alternate" hreflang="x-default" href="<?php echo SITE_URL; ?>">
+    <link rel="alternate" hreflang="en" href="<?php echo $site_url; ?>?lang=en">
+    <link rel="alternate" hreflang="ur" href="<?php echo $site_url; ?>?lang=ur">
+    <link rel="alternate" hreflang="ar" href="<?php echo $site_url; ?>?lang=ar">
+    <link rel="alternate" hreflang="es" href="<?php echo $site_url; ?>?lang=es">
+    <link rel="alternate" hreflang="fr" href="<?php echo $site_url; ?>?lang=fr">
+    <link rel="alternate" hreflang="x-default" href="<?php echo $site_url; ?>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo SITE_URL; ?>">
+    <meta property="og:url" content="<?php echo $site_url; ?>">
     <meta property="og:title" content="<?php echo $page_title; ?>">
     <meta property="og:description" content="<?php echo $page_description; ?>">
-    <meta property="og:image" content="<?php echo SITE_URL; ?><?php echo get_company_config('seo.og_image'); ?>">
+    <meta property="og:image" content="<?php echo $site_url; ?><?php echo get_company_config('seo.og_image'); ?>">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?php echo SITE_URL; ?>">
+    <meta property="twitter:url" content="<?php echo $site_url; ?>">
     <meta property="twitter:title" content="<?php echo $page_title; ?>">
     <meta property="twitter:description" content="<?php echo $page_description; ?>">
-    <meta property="twitter:image" content="<?php echo SITE_URL; ?><?php echo get_company_config('seo.twitter_image'); ?>">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <meta property="twitter:image" content="<?php echo $site_url; ?><?php echo get_company_config('seo.twitter_image'); ?>">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -80,8 +75,8 @@ if (!isset($_SESSION['csrf_token'])) {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "<?php echo htmlspecialchars($translations['company']['name']); ?>",
-      "url": "<?php echo SITE_URL; ?>",
-      "logo": "<?php echo SITE_URL; ?>/assets/images/logo.png",
+      "url": "<?php echo $site_url; ?>",
+      "logo": "<?php echo $site_url; ?>/assets/images/logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "<?php echo get_formatted_phone(); ?>",
@@ -92,10 +87,16 @@ if (!isset($_SESSION['csrf_token'])) {
         "streetAddress": "<?php echo get_company_config('address.street'); ?>",
         "addressLocality": "<?php echo get_company_config('address.city'); ?>",
         "addressRegion": "<?php echo get_company_config('address.region'); ?>",
-        "addressCountry": "GB"
+        "addressCountry": "<?php echo get_company_config('address.country'); ?>"
       }
     }
     </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
 
     <!-- Custom Tailwind Config -->
     <script>
@@ -151,17 +152,17 @@ if (!isset($_SESSION['csrf_token'])) {
 <body class="font-sans antialiased text-gray-900 bg-white scroll-smooth">
 
     <!-- Language Switcher -->
-    <div class="bg-gray-50 border-b border-gray-100">
+    <div id="language-switcher" class="bg-gray-50 border-b border-gray-100 relative z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-end py-2">
+            <div class="flex justify-end py-3">
                 <div class="flex items-center space-x-4">
                     <span class="text-xs text-gray-600"><?php echo $translations['language']['change']; ?>:</span>
-                    <div class="flex space-x-2">
-                        <a href="?lang=en" class="text-xs font-medium <?php echo $language === 'en' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-primary-600'; ?> transition-colors">EN</a>
-                        <a href="?lang=ur" class="text-xs <?php echo $language === 'ur' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-primary-600'; ?> transition-colors">UR</a>
-                        <a href="?lang=ar" class="text-xs <?php echo $language === 'ar' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-primary-600'; ?> transition-colors">AR</a>
-                        <a href="?lang=es" class="text-xs <?php echo $language === 'es' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-primary-600'; ?> transition-colors">ES</a>
-                        <a href="?lang=fr" class="text-xs <?php echo $language === 'fr' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-primary-600'; ?> transition-colors">FR</a>
+                    <div class="flex space-x-3">
+                        <a href="?lang=en" class="text-xs font-medium px-2 py-1 rounded <?php echo $language === 'en' ? 'text-primary-600 bg-primary-50 font-bold' : 'text-gray-500 hover:text-primary-600 hover:bg-gray-100'; ?> transition-colors">EN</a>
+                        <a href="?lang=ur" class="text-xs px-2 py-1 rounded <?php echo $language === 'ur' ? 'text-primary-600 bg-primary-50 font-bold' : 'text-gray-500 hover:text-primary-600 hover:bg-gray-100'; ?> transition-colors">UR</a>
+                        <a href="?lang=ar" class="text-xs px-2 py-1 rounded <?php echo $language === 'ar' ? 'text-primary-600 bg-primary-50 font-bold' : 'text-gray-500 hover:text-primary-600 hover:bg-gray-100'; ?> transition-colors">AR</a>
+                        <a href="?lang=es" class="text-xs px-2 py-1 rounded <?php echo $language === 'es' ? 'text-primary-600 bg-primary-50 font-bold' : 'text-gray-500 hover:text-primary-600 hover:bg-gray-100'; ?> transition-colors">ES</a>
+                        <a href="?lang=fr" class="text-xs px-2 py-1 rounded <?php echo $language === 'fr' ? 'text-primary-600 bg-primary-50 font-bold' : 'text-gray-500 hover:text-primary-600 hover:bg-gray-100'; ?> transition-colors">FR</a>
                     </div>
                 </div>
             </div>
@@ -169,7 +170,7 @@ if (!isset($_SESSION['csrf_token'])) {
     </div>
 
     <!-- Navigation -->
-    <nav class="glass-effect fixed w-full top-0 z-50 border-b border-gray-100/20" style="top: 32px;">
+    <nav id="main-navigation" class="glass-effect fixed w-full z-40 border-b border-gray-100/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center animate-fade-in-left">
@@ -182,19 +183,198 @@ if (!isset($_SESSION['csrf_token'])) {
                 </div>
 
                 <div class="hidden lg:flex items-center space-x-8 animate-fade-in">
-                    <a href="#home" class="text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['home']; ?></a>
-                    <a href="#services" class="text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['services']; ?></a>
-                    <a href="#portfolio" class="text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['portfolio']; ?></a>
-                    <a href="#testimonials" class="text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['testimonials']; ?></a>
-                    <a href="#pricing" class="text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['pricing']; ?></a>
-                    <a href="#contact" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-all hover-scale font-medium"><?php echo $translations['navigation']['contact']; ?></a>
+                    <a href="#home" class="nav-link text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['home']; ?></a>
+                    <a href="#services" class="nav-link text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['services']; ?></a>
+                    <a href="#portfolio" class="nav-link text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['portfolio']; ?></a>
+                    <a href="#testimonials" class="nav-link text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['testimonials']; ?></a>
+                    <a href="#pricing" class="nav-link text-gray-700 hover:text-primary-600 transition-colors font-medium"><?php echo $translations['navigation']['pricing']; ?></a>
+                    <a href="#contact" class="btn-primary text-white px-6 py-2 rounded-xl hover-scale font-medium"><?php echo $translations['navigation']['contact']; ?></a>
                 </div>
 
-                <button class="lg:hidden text-gray-700 hover:text-primary-600 transition-colors">
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-gray-700 hover:text-primary-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden">
+                <div class="py-4 space-y-2">
+                    <a href="#home" class="mobile-nav-link block py-2 text-gray-700 hover:text-primary-600 transition-colors"><?php echo $translations['navigation']['home']; ?></a>
+                    <a href="#services" class="mobile-nav-link block py-2 text-gray-700 hover:text-primary-600 transition-colors"><?php echo $translations['navigation']['services']; ?></a>
+                    <a href="#portfolio" class="mobile-nav-link block py-2 text-gray-700 hover:text-primary-600 transition-colors"><?php echo $translations['navigation']['portfolio']; ?></a>
+                    <a href="#testimonials" class="mobile-nav-link block py-2 text-gray-700 hover:text-primary-600 transition-colors"><?php echo $translations['navigation']['testimonials']; ?></a>
+                    <a href="#pricing" class="mobile-nav-link block py-2 text-gray-700 hover:text-primary-600 transition-colors"><?php echo $translations['navigation']['pricing']; ?></a>
+                    <a href="#contact" class="mobile-nav-link block py-2 mt-4 btn-primary text-white text-center rounded-xl"><?php echo $translations['navigation']['contact']; ?></a>
+                </div>
+            </div>
         </div>
     </nav>
+
+    <!-- JavaScript -->
+    <script>
+        // Dynamic header positioning
+        function positionNavigation() {
+            const languageSwitcher = document.getElementById('language-switcher');
+            const navigation = document.getElementById('main-navigation');
+
+            if (!languageSwitcher || !navigation) {
+                console.log('Header elements not found, retrying...');
+                setTimeout(positionNavigation, 100);
+                return;
+            }
+
+            // Get the actual height including any margins and padding
+            const switcherRect = languageSwitcher.getBoundingClientRect();
+            const switcherHeight = switcherRect.height;
+
+            // Add a small buffer to ensure proper spacing
+            const buffer = 2;
+            const topPosition = switcherHeight + buffer;
+
+            // Apply the positioning
+            navigation.style.top = topPosition + 'px';
+
+            // Ensure the navigation has proper width
+            navigation.style.width = '100%';
+
+            console.log('Header positioning updated:');
+            console.log('- Language switcher height:', switcherHeight + 'px');
+            console.log('- Navigation positioned at top:', topPosition + 'px');
+            console.log('- Navigation width:', navigation.style.width);
+        }
+
+        // Position navigation when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Small delay to ensure all styles are applied
+                setTimeout(positionNavigation, 50);
+            });
+        } else {
+            // DOM is already loaded
+            setTimeout(positionNavigation, 50);
+        }
+
+        // Reposition navigation on window resize with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(positionNavigation, 150);
+        });
+
+        // Reposition navigation when language is changed
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('a[href*="lang="]')) {
+                // Delay to allow language switcher height to update
+                setTimeout(positionNavigation, 100);
+            }
+        });
+
+        // Debug header positioning
+        console.log('=== HEADER DEBUG INFO ===');
+        const nav = document.querySelector('nav');
+        if (nav) {
+            const navStyles = window.getComputedStyle(nav);
+            console.log('Navigation element found:', nav);
+            console.log('Position:', navStyles.position);
+            console.log('Top:', navStyles.top);
+            console.log('Z-index:', navStyles.zIndex);
+            console.log('Width:', navStyles.width);
+            console.log('Display:', navStyles.display);
+            console.log('Visibility:', navStyles.visibility);
+
+            // Check if there are any transforms
+            const transform = navStyles.transform;
+            if (transform && transform !== 'none') {
+                console.log('Transform applied:', transform);
+            }
+
+            // Check parent elements
+            let parent = nav.parentElement;
+            let level = 0;
+            while (parent && level < 3) {
+                const parentStyles = window.getComputedStyle(parent);
+                console.log(`Parent ${level} (${parent.tagName}):`, {
+                    position: parentStyles.position,
+                    zIndex: parentStyles.zIndex,
+                    overflow: parentStyles.overflow
+                });
+                parent = parent.parentElement;
+                level++;
+            }
+        } else {
+            console.log('Navigation element NOT found!');
+        }
+
+        // Check for conflicting CSS rules
+        console.log('=== CSS RULES CHECK ===');
+        const allElements = document.querySelectorAll('*');
+        let highZIndexElements = [];
+        allElements.forEach(el => {
+            const styles = window.getComputedStyle(el);
+            const zIndex = parseInt(styles.zIndex);
+            if (!isNaN(zIndex) && zIndex > 40) { // Higher than our nav z-index
+                highZIndexElements.push({
+                    element: el.tagName + (el.className ? '.' + el.className : ''),
+                    zIndex: zIndex,
+                    position: styles.position
+                });
+            }
+        });
+        if (highZIndexElements.length > 0) {
+            console.log('Elements with z-index > 40:', highZIndexElements);
+        } else {
+            console.log('No elements found with z-index higher than navigation (40)');
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navbar = document.querySelector('nav');
+                    const navbarHeight = navbar.offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Active nav link highlighting
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary-600');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-primary-600');
+                }
+            });
+        });
+    </script>
+</body>
