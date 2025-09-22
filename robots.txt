@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /storage/
+Disallow: /config.php
+Disallow: /submit_contact.php
+
+Sitemap: https://yourdomain.com/sitemap.xml
