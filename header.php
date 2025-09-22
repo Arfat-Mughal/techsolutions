@@ -152,7 +152,7 @@ if (!isset($_SESSION['csrf_token'])) {
 <body class="font-sans antialiased text-gray-900 bg-white scroll-smooth">
 
     <!-- Language Switcher -->
-    <div id="language-switcher" class="bg-gray-50 border-b border-gray-100 relative z-50">
+    <div id="language-switcher" class="bg-gray-50 border-b border-gray-100 relative z-30" style="top: 80px;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-end py-3">
                 <div class="flex items-center space-x-4">
@@ -170,7 +170,7 @@ if (!isset($_SESSION['csrf_token'])) {
     </div>
 
     <!-- Navigation -->
-    <nav id="main-navigation" class="glass-effect fixed w-full z-40 border-b border-gray-100/20">
+    <nav id="main-navigation" class="glass-effect fixed w-full z-50 border-b border-gray-100/20" style="top: 0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center animate-fade-in-left">
@@ -216,33 +216,35 @@ if (!isset($_SESSION['csrf_token'])) {
     <script>
         // Dynamic header positioning
         function positionNavigation() {
-            const languageSwitcher = document.getElementById('language-switcher');
             const navigation = document.getElementById('main-navigation');
+            const languageSwitcher = document.getElementById('language-switcher');
 
-            if (!languageSwitcher || !navigation) {
-                console.log('Header elements not found, retrying...');
+            if (!navigation) {
+                console.log('Navigation element not found, retrying...');
                 setTimeout(positionNavigation, 100);
                 return;
             }
 
-            // Get the actual height including any margins and padding
-            const switcherRect = languageSwitcher.getBoundingClientRect();
-            const switcherHeight = switcherRect.height;
-
-            // Add a small buffer to ensure proper spacing
-            const buffer = 2;
-            const topPosition = switcherHeight + buffer;
-
-            // Apply the positioning
-            navigation.style.top = topPosition + 'px';
-
-            // Ensure the navigation has proper width
+            // Position navigation at the very top
+            const navTopPosition = 0;
+            navigation.style.top = navTopPosition + 'px';
             navigation.style.width = '100%';
 
-            console.log('Header positioning updated:');
-            console.log('- Language switcher height:', switcherHeight + 'px');
-            console.log('- Navigation positioned at top:', topPosition + 'px');
-            console.log('- Navigation width:', navigation.style.width);
+            // Position language switcher below navigation
+            if (languageSwitcher) {
+                const navHeight = navigation.offsetHeight;
+                const switcherTopPosition = navHeight;
+                languageSwitcher.style.top = switcherTopPosition + 'px';
+
+                console.log('Header positioning updated:');
+                console.log('- Navigation positioned at top:', navTopPosition + 'px');
+                console.log('- Navigation height:', navHeight + 'px');
+                console.log('- Language switcher positioned at top:', switcherTopPosition + 'px');
+            } else {
+                console.log('Header positioning updated:');
+                console.log('- Navigation positioned at top:', navTopPosition + 'px');
+                console.log('- Navigation width:', navigation.style.width);
+            }
         }
 
         // Position navigation when DOM is ready
@@ -263,7 +265,7 @@ if (!isset($_SESSION['csrf_token'])) {
             resizeTimeout = setTimeout(positionNavigation, 150);
         });
 
-        // Reposition navigation when language is changed
+        // Reposition elements when language is changed
         document.addEventListener('click', function(e) {
             if (e.target.closest('a[href*="lang="]')) {
                 // Delay to allow language switcher height to update
