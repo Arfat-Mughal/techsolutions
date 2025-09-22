@@ -553,7 +553,7 @@ require_once 'header.php';
                 
                 <!-- Contact Form -->
                 <div class="animate-fade-in-right">
-                    <form class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <form class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg border border-gray-100" action="submit_contact.php" method="POST" id="contact-form">
                         <div class="grid sm:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label for="name" class="block text-sm font-semibold text-gray-900 mb-2">Full Name *</label>
@@ -564,6 +564,18 @@ require_once 'header.php';
                                 <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
                             </div>
                         </div>
+
+                        <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
+                        <!-- Honeypot Field -->
+                        <div style="position: absolute; left: -9999px; visibility: hidden;">
+                            <label for="website">Leave this field empty</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <!-- Preferred Language -->
+                        <input type="hidden" name="preferred_language" value="en">
                         
                         <div class="grid sm:grid-cols-2 gap-6 mb-6">
                             <div>
@@ -606,8 +618,15 @@ require_once 'header.php';
                             </label>
                         </div>
                         
-                        <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-600 transition-all hover-scale">
-                            Send Message
+                        <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-600 transition-all hover-scale" id="submit-btn">
+                            <span id="submit-text">Send Message</span>
+                            <span id="loading-spinner" class="hidden">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Sending...
+                            </span>
                         </button>
                     </form>
                 </div>
@@ -618,3 +637,138 @@ require_once 'header.php';
 <?php
 require_once 'footer.php';
 ?>
+
+<!-- Contact Form JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const loadingSpinner = document.getElementById('loading-spinner');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitText.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+
+        // Create FormData object
+        const formData = new FormData(form);
+
+        // Submit form via AJAX
+        fetch('submit_contact.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading state
+            submitBtn.disabled = false;
+            submitText.classList.remove('hidden');
+            loadingSpinner.classList.add('hidden');
+
+            if (data.success) {
+                // Show success message
+                showMessage('Thank you for your message! We will get back to you soon.', 'success');
+
+                // Reset form
+                form.reset();
+
+                // Clear any previous error messages
+                clearErrors();
+            } else {
+                // Show error message
+                if (data.errors) {
+                    // Show field-specific errors
+                    showFieldErrors(data.errors);
+                } else {
+                    // Show general error message
+                    showMessage(data.message || 'An error occurred. Please try again.', 'error');
+                }
+            }
+        })
+        .catch(error => {
+            // Hide loading state
+            submitBtn.disabled = false;
+            submitText.classList.remove('hidden');
+            loadingSpinner.classList.add('hidden');
+
+            console.error('Error:', error);
+            showMessage('An error occurred. Please try again.', 'error');
+        });
+    });
+
+    function showMessage(message, type) {
+        // Remove any existing messages
+        const existingMessage = document.querySelector('.form-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+
+        // Create message element
+        const messageEl = document.createElement('div');
+        messageEl.className = `form-message ${type === 'success' ? 'bg-green-100 border-green-500 text-green-700' : 'bg-red-100 border-red-500 text-red-700'} border-l-4 p-4 mb-4 rounded`;
+        messageEl.innerHTML = `
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 ${type === 'success' ? 'text-green-400' : 'text-red-400'}" fill="currentColor" viewBox="0 0 20 20">
+                        ${type === 'success' ?
+                            '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>' :
+                            '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>'
+                        }
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm">${message}</p>
+                </div>
+            </div>
+        `;
+
+        // Insert message before the form
+        form.parentNode.insertBefore(messageEl, form);
+
+        // Auto-hide success message after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.remove();
+                }
+            }, 5000);
+        }
+    }
+
+    function showFieldErrors(errors) {
+        clearErrors();
+
+        for (const [field, message] of Object.entries(errors)) {
+            const fieldElement = document.getElementById(field);
+            if (fieldElement) {
+                // Add error class to field
+                fieldElement.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+
+                // Create error message element
+                const errorEl = document.createElement('p');
+                errorEl.className = 'mt-1 text-sm text-red-600';
+                errorEl.textContent = message;
+
+                // Insert error message after the field
+                fieldElement.parentNode.appendChild(errorEl);
+            }
+        }
+    }
+
+    function clearErrors() {
+        // Remove error classes from all form fields
+        const fields = form.querySelectorAll('input, select, textarea');
+        fields.forEach(field => {
+            field.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+        });
+
+        // Remove error messages
+        const errorMessages = form.querySelectorAll('.text-red-600');
+        errorMessages.forEach(error => error.remove());
+    }
+});
+</script>
