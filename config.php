@@ -31,7 +31,7 @@ function get_db_connection() {
     if (!is_db_configured()) {
         return null;
     }
-    
+
     try {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
         $options = [
@@ -44,5 +44,34 @@ function get_db_connection() {
         error_log("Database connection failed: " . $e->getMessage());
         return null;
     }
+}
+
+// Get company configuration values
+function get_company_config($key) {
+    // Load translations if not already loaded
+    global $translations;
+
+    if (!isset($translations)) {
+        // Fallback to English if translations not loaded
+        $translations = require_once 'lang/en.php';
+    }
+
+    // Map configuration keys to translation keys
+    $key_mapping = [
+        'company.name' => $translations['company_info']['name'] ?? 'TechSolutions',
+        'seo.og_image' => $translations['company_info']['seo']['og_image'] ?? '/assets/images/og-image.jpg',
+        'seo.twitter_image' => $translations['company_info']['seo']['twitter_image'] ?? '/assets/images/twitter-image.jpg',
+        'address.street' => $translations['company_info']['address']['street'] ?? 'Flat 14E, 4 Mann Island',
+        'address.city' => $translations['company_info']['address']['city'] ?? 'Liverpool',
+        'address.region' => $translations['company_info']['address']['region'] ?? 'Merseyside',
+        'contact.email' => $translations['company_info']['email'] ?? 'info@techsolutions.co.uk',
+        'social.facebook' => $translations['company_info']['social']['facebook'] ?? '#',
+        'social.twitter' => $translations['company_info']['social']['twitter'] ?? '#',
+        'social.instagram' => $translations['company_info']['social']['instagram'] ?? '#',
+        'social.linkedin' => $translations['company_info']['social']['linkedin'] ?? '#',
+        'whatsapp.button_text' => $translations['company_info']['whatsapp']['button_text'] ?? 'Chat with us on WhatsApp'
+    ];
+
+    return $key_mapping[$key] ?? 'TechSolutions';
 }
 ?>

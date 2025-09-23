@@ -1,14 +1,37 @@
 <?php
 // Include company configuration
-require_once 'company_config.php';
+require_once 'config.php';
+
+// Start session for CSRF token and language
+session_start();
+
+// Language handling
+$supported_languages = ['en', 'ur', 'ar', 'es', 'fr'];
+$default_language = 'en';
+
+// Get language from query parameter or browser preference
+if (isset($_GET['lang']) && in_array($_GET['lang'], $supported_languages)) {
+    $language = $_GET['lang'];
+    $_SESSION['lang'] = $language;
+} elseif (isset($_SESSION['lang'])) {
+    $language = $_SESSION['lang'];
+} else {
+    // Detect browser language
+    $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    $language = in_array($browser_lang, $supported_languages) ? $browser_lang : $default_language;
+    $_SESSION['lang'] = $language;
+}
+
+// Load translations
+$translations = require_once "lang/{$language}.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Policy - <?php echo get_company_config('company.name'); ?></title>
-    <meta name="description" content="Cookie Policy for <?php echo get_company_config('company.name'); ?> - Learn about how we use cookies on our website.">
+    <title><?php echo $translations['policy_pages']['learn_about_cookies']; ?> - <?php echo $translations['company_info']['name']; ?></title>
+    <meta name="description" content="<?php echo $translations['policy_pages']['learn_about_cookies']; ?> for <?php echo $translations['company_info']['name']; ?> - <?php echo $translations['policy_pages']['learn_about_cookies']; ?>.">
     <meta name="robots" content="index, follow">
 
     <!-- Tailwind CSS -->
@@ -48,10 +71,10 @@ require_once 'company_config.php';
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                         </svg>
                     </div>
-                    <h1 class="text-2xl font-bold gradient-text"><?php echo get_company_config('company.name'); ?></h1>
+                    <h1 class="text-2xl font-bold gradient-text"><?php echo $translations['company_info']['name']; ?></h1>
                 </div>
                 <a href="index.php" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-all font-medium">
-                    Back to Home
+                    <?php echo $translations['policy_pages']['back_to_home']; ?>
                 </a>
             </div>
         </div>
@@ -62,9 +85,9 @@ require_once 'company_config.php';
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header -->
             <div class="text-center mb-16">
-                <h1 class="text-4xl lg:text-5xl font-bold mb-6 gradient-text">Cookie Policy</h1>
+                <h1 class="text-4xl lg:text-5xl font-bold mb-6 gradient-text"><?php echo $translations['policy_pages']['learn_about_cookies']; ?></h1>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Last updated: <?php echo date('F j, Y'); ?>
+                    <?php echo $translations['policy_pages']['last_updated']; ?>: <?php echo date('F j, Y'); ?>
                 </p>
             </div>
 
@@ -78,7 +101,7 @@ require_once 'company_config.php';
 
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">2. How We Use Cookies</h2>
                     <p class="text-gray-600 mb-4">
-                        <?php echo get_company_config('company.name'); ?> uses cookies for the following purposes:
+                        <?php echo $translations['company_info']['name']; ?> uses cookies for the following purposes:
                     </p>
 
                     <h3 class="text-xl font-semibold text-gray-900 mb-3">2.1 Essential Cookies</h3>
@@ -206,9 +229,9 @@ require_once 'company_config.php';
                         If you have any questions about our use of cookies or this Cookie Policy, please contact us:
                     </p>
                     <div class="bg-gray-50 p-6 rounded-lg">
-                        <p class="text-gray-600 mb-2"><strong>Email:</strong> <?php echo get_company_config('contact.email'); ?></p>
-                        <p class="text-gray-600 mb-2"><strong>Phone:</strong> <?php echo get_formatted_phone(); ?></p>
-                        <p class="text-gray-600 mb-2"><strong>Address:</strong> <?php echo get_full_address(); ?></p>
+                        <p class="text-gray-600 mb-2"><strong>Email:</strong> <?php echo $translations['company_info']['email']; ?></p>
+                        <p class="text-gray-600 mb-2"><strong>Phone:</strong> <?php echo $translations['company_info']['phone']; ?></p>
+                        <p class="text-gray-600 mb-2"><strong>Address:</strong> <?php echo $translations['company_info']['address']['full_address']; ?></p>
                     </div>
 
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">10. Additional Resources</h2>
@@ -239,25 +262,25 @@ require_once 'company_config.php';
                         <h3 class="text-xl font-bold"><?php echo get_company_config('company.name'); ?></h3>
                     </div>
                     <p class="text-gray-300">
-                        Professional software development services tailored to your business needs.
+                        <?php echo $translations['policy_pages']['professional_services']; ?>
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <h4 class="text-lg font-semibold mb-4"><?php echo $translations['footer']['quick_links']; ?></h4>
                     <ul class="space-y-2">
-                        <li><a href="index.php" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
-                        <li><a href="index.php#services" class="text-gray-300 hover:text-white transition-colors">Services</a></li>
-                        <li><a href="index.php#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="index.php" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['navigation']['home']; ?></a></li>
+                        <li><a href="index.php#services" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['navigation']['services']; ?></a></li>
+                        <li><a href="index.php#contact" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['navigation']['contact']; ?></a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <h4 class="text-lg font-semibold mb-4"><?php echo $translations['policy_pages']['learn_about_privacy']; ?></h4>
                     <ul class="space-y-2">
-                        <li><a href="privacy-policy.php" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="terms-of-service.php" class="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li>
-                        <li><a href="cookie-policy.php" class="text-gray-300 hover:text-white transition-colors">Cookie Policy</a></li>
+                        <li><a href="privacy-policy.php" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['policy_pages']['learn_about_privacy']; ?></a></li>
+                        <li><a href="terms-of-service.php" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['policy_pages']['read_our_terms']; ?></a></li>
+                        <li><a href="cookie-policy.php" class="text-gray-300 hover:text-white transition-colors"><?php echo $translations['policy_pages']['learn_about_cookies']; ?></a></li>
                     </ul>
                 </div>
             </div>

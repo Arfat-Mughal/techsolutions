@@ -1,7 +1,6 @@
 <?php
 // Include company configuration
 require_once 'config.php';
-require_once 'company_config.php';
 
 // Start session for CSRF token and language
 session_start();
@@ -45,49 +44,49 @@ if (!isset($_SESSION['csrf_token'])) {
     <meta name="description" content="<?php echo $page_description; ?>">
     <meta name="keywords" content="<?php echo $page_keywords; ?>">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="<?php echo $site_url; ?>">
+    <link rel="canonical" href="<?php echo $translations['company_info']['website']; ?>">
 
     <!-- hreflang tags for multilingual support -->
-    <link rel="alternate" hreflang="en" href="<?php echo $site_url; ?>?lang=en">
-    <link rel="alternate" hreflang="ur" href="<?php echo $site_url; ?>?lang=ur">
-    <link rel="alternate" hreflang="ar" href="<?php echo $site_url; ?>?lang=ar">
-    <link rel="alternate" hreflang="es" href="<?php echo $site_url; ?>?lang=es">
-    <link rel="alternate" hreflang="fr" href="<?php echo $site_url; ?>?lang=fr">
-    <link rel="alternate" hreflang="x-default" href="<?php echo $site_url; ?>">
+    <link rel="alternate" hreflang="en" href="<?php echo $translations['company_info']['website']; ?>?lang=en">
+    <link rel="alternate" hreflang="ur" href="<?php echo $translations['company_info']['website']; ?>?lang=ur">
+    <link rel="alternate" hreflang="ar" href="<?php echo $translations['company_info']['website']; ?>?lang=ar">
+    <link rel="alternate" hreflang="es" href="<?php echo $translations['company_info']['website']; ?>?lang=es">
+    <link rel="alternate" hreflang="fr" href="<?php echo $translations['company_info']['website']; ?>?lang=fr">
+    <link rel="alternate" hreflang="x-default" href="<?php echo $translations['company_info']['website']; ?>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo $site_url; ?>">
+    <meta property="og:url" content="<?php echo $translations['company_info']['website']; ?>">
     <meta property="og:title" content="<?php echo $page_title; ?>">
     <meta property="og:description" content="<?php echo $page_description; ?>">
-    <meta property="og:image" content="<?php echo $site_url; ?><?php echo get_company_config('seo.og_image'); ?>">
+    <meta property="og:image" content="<?php echo $translations['company_info']['website']; ?><?php echo $translations['company_info']['seo']['og_image']; ?>">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?php echo $site_url; ?>">
+    <meta property="twitter:url" content="<?php echo $translations['company_info']['website']; ?>">
     <meta property="twitter:title" content="<?php echo $page_title; ?>">
     <meta property="twitter:description" content="<?php echo $page_description; ?>">
-    <meta property="twitter:image" content="<?php echo $site_url; ?><?php echo get_company_config('seo.twitter_image'); ?>">
+    <meta property="twitter:image" content="<?php echo $translations['company_info']['website']; ?><?php echo $translations['company_info']['seo']['twitter_image']; ?>">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "<?php echo htmlspecialchars($translations['company']['name']); ?>",
-      "url": "<?php echo $site_url; ?>",
-      "logo": "<?php echo $site_url; ?>/assets/images/logo.png",
+      "name": "<?php echo htmlspecialchars($translations['company_info']['name']); ?>",
+      "url": "<?php echo $translations['company_info']['website']; ?>",
+      "logo": "<?php echo $translations['company_info']['website']; ?><?php echo $translations['company_info']['logo']; ?>",
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "<?php echo get_formatted_phone(); ?>",
+        "telephone": "<?php echo $translations['company_info']['phone']; ?>",
         "contactType": "customer service"
       },
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "<?php echo get_company_config('address.street'); ?>",
-        "addressLocality": "<?php echo get_company_config('address.city'); ?>",
-        "addressRegion": "<?php echo get_company_config('address.region'); ?>",
-        "addressCountry": "<?php echo get_company_config('address.country'); ?>"
+        "streetAddress": "<?php echo $translations['company_info']['address']['street']; ?>",
+        "addressLocality": "<?php echo $translations['company_info']['address']['city']; ?>",
+        "addressRegion": "<?php echo $translations['company_info']['address']['region']; ?>",
+        "addressCountry": "<?php echo $translations['company_info']['address']['country']; ?>"
       }
     }
     </script>

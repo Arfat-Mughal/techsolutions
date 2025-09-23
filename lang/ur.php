@@ -134,13 +134,180 @@ return [
         'preferred_language' => 'ترجیحی رابطے کی زبان',
         'consent' => 'میں رضامند ہوں کہ یہ ویب سائٹ میری جمع کرائی گئی معلومات کو اسٹور کرے تاکہ وہ میری استفسار کا جواب دے سکیں۔',
         'submit' => 'پیغام بھیجیں',
-        'other' => 'دیگر'
+        'other' => 'دیگر',
+        'web_development' => 'ویب ڈویلپمنٹ',
+        'mobile_development' => 'موبائل ڈویلپمنٹ',
+        'seo_services' => 'SEO خدمات',
+        'aso_services' => 'ASO خدمات'
     ],
     'footer' => [
         'description' => 'لاہور، پاکستان میں ایک معروف آئی ٹی سولوشنز فراہم کنندہ جو ویب ڈویلپمنٹ، موبائل ایپس، ایس ای او، اور اے ایس او سروسز میں مہارت رکھتا ہے۔',
         'quick_links' => 'فوری لنکس',
         'services' => 'خدمات',
         'copyright' => '© ' . date('Y') . ' ٹیک سولوشنز۔ تمام حقوق محفوظ ہیں۔'
+    ],
+    'hero_section' => [
+        'title_line1' => 'تبدیل کریں آئیڈیاز',
+        'title_line2' => 'ڈیجیٹل حقیقت میں',
+        'description' => 'ہم غیر معمولی سافٹ ویئر حل تیار کرتے ہیں جو کاروبار کی ترقی کو فروغ دیتے ہیں۔ ویب ڈویلپمنٹ سے لے کر موبائل ایپس تک، ہم جدید ترین ٹیکنالوجی کے ساتھ آپ کے ویژن کو حقیقت بناتے ہیں۔',
+        'cta_start' => 'اپنا پروجیکٹ شروع کریں',
+        'cta_view' => 'ہمارا کام دیکھیں'
+    ],
+    'services_section' => [
+        'title' => 'ہماری خدمات',
+        'subtitle' => 'ہم آپ کے کاروبار کی ضروریات کے مطابق جامع سافٹ ویئر حل فراہم کرتے ہیں',
+        'web_dev_title' => 'ویب ڈویلپمنٹ',
+        'web_dev_desc' => 'جدید ٹیکنالوجیز اور فریم ورکس کا استعمال کرتے ہوئے طاقتور، جوابدہ ویب سائٹس اور ویب ایپلیکیشنز بنائیں۔',
+        'mobile_dev_title' => 'موبائل ڈویلپمنٹ',
+        'mobile_dev_desc' => 'iOS اور Android کے لیے نئیٹو اور کراس پلیٹ فارم موبائل ایپلیکیشنز بنائیں جو غیر معمولی صارف کا تجربہ فراہم کرتی ہیں۔',
+        'seo_title' => 'SEO کی اصلاح',
+        'seo_desc' => 'ہماری ثابت شدہ SEO حکمت عملیوں کے ساتھ اپنی سرچ انجن رینکنگ کو بہتر بنائیں اور نامیاتی ٹریفک کو بڑھائیں۔',
+        'aso_title' => 'ASO خدمات',
+        'aso_desc' => 'ہماری ASO مہارت کے ساتھ ایپ اسٹورز میں اپنی موبائل ایپ کی مرئیت اور ڈاؤن لوڈز کو بہتر بنائیں۔'
+    ],
+    'portfolio_section' => [
+        'title' => 'ہمارا پورٹ فولیو',
+        'subtitle' => 'ہمارے تازہ ترین پروجیکٹس دریافت کریں اور دیکھیں کہ ہم نے کاروباروں کو ان کے اہداف حاصل کرنے میں کس طرح مدد کی ہے',
+        'project1_title' => 'ای کامرس پلیٹ فارم',
+        'project1_desc' => 'ایک جامع ای کامرس حل جو جدید خصوصیات اور بغیر رکاوٹ صارف کے تجربے کے ساتھ ہے۔',
+        'project2_title' => 'موبائل بینکنگ ایپ',
+        'project2_desc' => 'بایومیٹرک تصدیق کے ساتھ محفوظ اور بدیہی موبائل بینکنگ ایپلیکیشن۔',
+        'project3_title' => 'اینالیٹکس ڈیش بورڈ',
+        'project3_desc' => 'انٹرایکٹو چارٹس اور ڈیٹا ویژولائزیشن کے ساتھ ریئل ٹائم اینالیٹکس ڈیش بورڈ۔',
+        'tech_react' => 'React',
+        'tech_nodejs' => 'Node.js',
+        'tech_mongodb' => 'MongoDB',
+        'tech_flutter' => 'Flutter',
+        'tech_firebase' => 'Firebase',
+        'tech_security' => 'سیکیورٹی',
+        'tech_vuejs' => 'Vue.js',
+        'tech_d3js' => 'D3.js',
+        'tech_api' => 'API',
+        'view_project' => 'پروجیکٹ دیکھیں'
+    ],
+    'testimonials_section' => [
+        'title' => 'کلائنٹ کی شہادتیں',
+        'subtitle' => 'صرف ہماری بات پر یقین نہ کریں - سنیں کہ ہمارے کلائنٹس کیا کہتے ہیں',
+        'testimonial1_name' => 'جان سمتھ',
+        'testimonial1_position' => 'سی ای او، ٹیک اسٹارٹ اپ',
+        'testimonial1_content' => 'ٹیک سولوشنز نے ہمارے پرانے نظام کو ایک جدید، کارآمد پلیٹ فارم میں تبدیل کر دیا۔ تفصیلات پر ان کی توجہ اور تکنیکی مہارت ہماری توقعات سے تجاوز کر گئی۔',
+        'testimonial2_name' => 'ماریا جانسن',
+        'testimonial2_position' => 'مارکیٹنگ ڈائریکٹر',
+        'testimonial2_content' => 'موبائل ایپ جسے انہوں نے تیار کیا اس نے ہمارے کسٹمر کی مصروفیت میں 300% اضافہ کیا۔ ناقابل یقین نتائج کے ساتھ پیشہ ور ٹیم۔',
+        'testimonial3_name' => 'ڈیوڈ ولسن',
+        'testimonial3_position' => 'بانی، ای کامرس برانڈ',
+        'testimonial3_content' => 'ان کی SEO حکمت عملیوں نے ہمیں 3 ماہ کے اندر پہلے صفحے کی درجہ بندی حاصل کرنے میں مدد کی۔ ROI شاندار رہا ہے!'
+    ],
+    'pricing_section' => [
+        'title' => 'اپنی پلان کا انتخاب کریں',
+        'subtitle' => 'لچکدار قیمتوں کے اختیارات جو آپ کے کاروبار کے ساتھ بڑھنے کے لیے ڈیزائن کیے گئے ہیں',
+        'basic_title' => 'بنیادی',
+        'basic_price' => '$999',
+        'basic_subtitle' => 'چھوٹے پروجیکٹس کے لیے بہترین',
+        'basic_feature1' => 'جوابدہ ڈیزائن',
+        'basic_feature2' => 'زیادہ سے زیادہ 5 صفحات',
+        'basic_feature3' => 'بنیادی SEO',
+        'basic_feature4' => '30 دن کی سپورٹ',
+        'professional_title' => 'پیشہ ور',
+        'professional_price' => '$2,499',
+        'professional_subtitle' => 'بڑھتی ہوئی کمپنیوں کے لیے مثالی',
+        'professional_feature1' => 'بنیادی میں سب کچھ',
+        'professional_feature2' => 'زیادہ سے زیادہ 15 صفحات',
+        'professional_feature3' => 'ایڈوانسڈ SEO',
+        'professional_feature4' => 'ای کامرس انٹیگریشن',
+        'professional_feature5' => '90 دن کی سپورٹ',
+        'enterprise_title' => 'انٹرپرائز',
+        'enterprise_price' => '$4,999',
+        'enterprise_subtitle' => 'بڑے پیمانے کے پروجیکٹس کے لیے',
+        'enterprise_feature1' => 'پیشہ ور میں سب کچھ',
+        'enterprise_feature2' => 'لا محدود صفحات',
+        'enterprise_feature3' => 'کسٹم ڈویلپمنٹ',
+        'enterprise_feature4' => 'ترجیحی سپورٹ',
+        'enterprise_feature5' => '1 سال کی سپورٹ',
+        'get_started' => 'شروع کریں',
+        'most_popular' => 'سب سے زیادہ مقبول'
+    ],
+    'contact_section' => [
+        'title' => 'رابطہ کریں',
+        'subtitle' => 'کیا آپ اپنا پروجیکٹ شروع کرنے کے لیے تیار ہیں؟ آئیں اس پر بات کریں کہ ہم آپ کے آئیڈیاز کو کیسے حقیقت بنا سکتے ہیں۔',
+        'info_title' => 'رابطہ کی معلومات',
+        'address_label' => 'پتہ',
+        'phone_label' => 'فون',
+        'email_label' => 'ای میل',
+        'follow_us' => 'ہمیں فالو کریں',
+        'full_name' => 'پورا نام *',
+        'email_address' => 'ای میل ایڈریس *',
+        'phone_number' => 'فون نمبر',
+        'service_label' => 'سروس *',
+        'select_service' => 'ایک سروس منتخب کریں',
+        'web_development' => 'ویب ڈویلپمنٹ',
+        'mobile_development' => 'موبائل ڈویلپمنٹ',
+        'seo_services' => 'SEO خدمات',
+        'aso_services' => 'ASO خدمات',
+        'other' => 'دیگر',
+        'project_details' => 'پروجیکٹ کی تفصیلات *',
+        'project_placeholder' => 'ہمیں اپنے پروجیکٹ کی ضروریات کے بارے میں بتائیں...',
+        'budget_range' => 'بجٹ کی حد',
+        'select_budget' => 'بجٹ کی حد منتخب کریں',
+        'budget_under_1k' => '1,000 ڈالر سے کم',
+        'budget_1k_5k' => '1,000 - 5,000 ڈالر',
+        'budget_5k_10k' => '5,000 - 10,000 ڈالر',
+        'budget_10k_plus' => '10,000 ڈالر+',
+        'consent_text' => 'میں اپنے ذاتی ڈیٹا کی پروسیسنگ سے اتفاق کرتا ہوں اور اس انکوائری کے حوالے سے رابطہ کرنے کی رضامندی دیتا ہوں۔',
+        'send_message' => 'پیغام بھیجیں',
+        'sending' => 'بھیج رہا ہے...'
+    ],
+    'policy_pages' => [
+    'back_to_home' => 'ہوم پیج پر واپس جائیں',
+    'last_updated' => 'آخری اپ ڈیٹ',
+    'read_our_terms' => 'ہماری شرائط',
+    'learn_about_cookies' => 'کوکیز',
+    'learn_about_privacy' => 'پرائیویسی پالیسی',
+    'professional_services' => 'آپ کی کاروباری ضروریات کے مطابق پیشہ ورانہ سافٹ ویئر ڈویلپمنٹ سروسز۔'
+],
+    'company_info' => [
+        'name' => 'ٹیک سولوشنز',
+        'email' => 'info@techsolutions.co.uk',
+        'website' => 'https://techsolutions.co.uk',
+        'logo' => '/assets/images/logo.png',
+        'phone' => '+44 7521 605342',
+        'whatsapp' => '+447521605342',
+        'address' => [
+            'street' => 'فلیٹ 14E، 4 مین آئی لینڈ',
+            'city' => 'لیورپول',
+            'region' => 'میرسی سائیڈ',
+            'country' => 'متحدہ سلطنت',
+            'postal_code' => '',
+            'full_address' => 'فلیٹ 14E، 4 مین آئی لینڈ، لیورپول، میرسی سائیڈ، متحدہ سلطنت'
+        ],
+        'social' => [
+            'facebook' => '#',
+            'twitter' => '#',
+            'instagram' => '#',
+            'linkedin' => '#'
+        ],
+        'whatsapp' => [
+            'default_message' => 'ہیلو ٹیک سولوشنز، میں آپ کی خدمات کے بارے میں پوچھنا چاہتا ہوں',
+            'button_text' => 'واٹس ایپ پر ہم سے چیٹ کریں'
+        ],
+        'seo' => [
+            'og_image' => '/assets/images/og-image.jpg',
+            'twitter_image' => '/assets/images/twitter-image.jpg',
+            'default_description' => 'سافٹ ویئر حل فراہم کرنے والا رہنما جو ویب ڈویلپمنٹ، موبائل ایپس، SEO اور ASO خدمات پیش کرتا ہے۔',
+            'default_keywords' => 'ویب ڈویلپمنٹ، موبائل ایپس، SEO، ASO، سافٹ ویئر حل، ٹیک سولوشنز'
+        ],
+        'business_hours' => [
+            'monday_friday' => 'صبح 9:00 - شام 6:00',
+            'saturday' => 'صبح 10:00 - شام 4:00',
+            'sunday' => 'بند',
+            'timezone' => 'یورپ/لندن'
+        ],
+        'services' => [
+            'web_development' => 'حسب ضرورت ویب سائٹ ڈویلپمنٹ اور ای کامرس حل',
+            'mobile_development' => 'iOS اور Android ایپ ڈویلپمنٹ',
+            'seo' => 'سرچ انجن آپٹیمائزیشن خدمات',
+            'aso' => 'ایپ اسٹور آپٹیمائزیشن خدمات'
+        ]
     ]
 ];
 ?>
